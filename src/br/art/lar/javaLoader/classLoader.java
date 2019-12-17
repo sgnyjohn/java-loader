@@ -10,8 +10,7 @@ import java.io.FileInputStream;
 //*********************************************************************
 //*********************************************************************
 public class classLoader extends ClassLoader {
-	String path[];
-	ClassLoader parent;
+	String classPath[];
 	//*****************************************************************
 	//*****************************************************************
 	//*****************************************************************
@@ -30,12 +29,12 @@ public class classLoader extends ClassLoader {
     @Override
     public Class loadClass(String name) throws ClassNotFoundException {
 		String sf = name.replace('.', File.separatorChar) + ".class";
-		for (short i=0;i<path.length;i++) {
-			if ((new File(path[i]+"/"+sf)).exists()) {
+		for (short i=0;i<classPath.length;i++) {
+			if ((new File(classPath[i]+"/"+sf)).exists()) {
 				on(".... loadClass 1 "+name+" using "+getClass());
-				return getClass(name,path[i]+"/"+sf);
+				return getClass(name,classPath[i]+"/"+sf);
 			} else {
-		        on(".... NÃO loadClass '" + name + "' "+path[i]+"/"+sf );
+		        on(".... NÃO loadClass '" + name + "' "+classPath[i]+"/"+sf );
 			}
 		}
         on("... NÃO loadClass '" + name + "'");
@@ -60,11 +59,10 @@ public class classLoader extends ClassLoader {
         }
     }
 	//*****************************************************************
-    public classLoader(ClassLoader Parent,String Path[]) {
+    public classLoader(ClassLoader Parent,String ClassPath[]) {
         super(Parent);
-		parent = Parent;
-		path = Path;
-		on("parent "+parent.getClass().getName());
+		classPath = ClassPath;
+		on("parent "+Parent.getClass().getName());
     }	
 	//*****************************************************************
 	void on(String s) {
